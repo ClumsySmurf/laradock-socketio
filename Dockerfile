@@ -1,24 +1,19 @@
-FROM gcr.io/google_appengine/nodejs
-
-MAINTAINER John Hamilton <john@isnapapps.com>
-
-
-
-## Package set up
-#RUN /usr/bin/npm install socket.io && /usr/bin/npm install redis && /usr/bin/npm install ioredis && /usr/bin/npm install redis-notifier
-#RUN /usr/bin/npm install --silent rebound-server --save
-#RUN npm dedupe
-
-##### ADD SUPERVISOR config
-
-#COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+FROM mhart/alpine-node:6.7.0
+# FROM mhart/alpine-node:base-4
+# FROM mhart/alpine-node
 
 
-WORKDIR /app/
 
-COPY ./app /app/
+RUN mkdir -p ./app
+COPY app ./app
+WORKDIR ./app
 
-RUN npm --unsafe-perm install
 
+# If you have native dependencies, you'll need extra tools
+#RUN apk add --no-cache make gcc g++ python
+
+# If you need npm, don't use a base tag
+RUN npm install
 
 EXPOSE 3000
+CMD ["node", "webserver.js"]
