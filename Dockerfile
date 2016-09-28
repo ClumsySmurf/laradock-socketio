@@ -1,4 +1,5 @@
 FROM zzrot/alpine-node
+
 MAINTAINER John Hamilton <john@isnapapps.com>
 
 
@@ -21,7 +22,7 @@ RUN /bin/mkdir -p /server/logs
 
 #### NPM INSTALL OUR REBOUND SERVER
 
-RUN npm install --silent npm install rebound-server
+RUN npm install --silent rebound-server
 RUN npm dedupe
 
 
