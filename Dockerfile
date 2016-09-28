@@ -1,39 +1,24 @@
-FROM zzrot/alpine-node
+FROM gcr.io/google_appengine/nodejs
 
 MAINTAINER John Hamilton <john@isnapapps.com>
 
 
-###### SET UP BASE STUFF
 
-RUN apk add --update \
-    supervisor \
-  && rm -rf /var/cache/apk/*
-
+## Package set up
+#RUN /usr/bin/npm install socket.io && /usr/bin/npm install redis && /usr/bin/npm install ioredis && /usr/bin/npm install redis-notifier
+#RUN /usr/bin/npm install --silent rebound-server --save
+#RUN npm dedupe
 
 ##### ADD SUPERVISOR config
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+#COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
-#### MAKE LOG FOLDER
+WORKDIR /app/
 
-RUN /bin/mkdir -p /server/logs
+COPY ./app /app/
 
-
-#### NPM INSTALL OUR REBOUND SERVER
-
-RUN npm install --silent rebound-server
-RUN npm dedupe
-
-
-#### CHANGE TO WORKDIR
-
-WORKDIR /server
-
-
-#### Run the command
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+RUN npm --unsafe-perm install
 
 
 EXPOSE 3000
