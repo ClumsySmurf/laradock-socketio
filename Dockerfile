@@ -19,11 +19,20 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN /bin/mkdir -p /srv/logs
 
 
+#### NPM INSTALL OUR REBOUND SERVER
+
 RUN npm install --silent npm install rebound-server --save
 RUN npm dedupe
 
+
+#### CHANGE TO WORKDIR
+
 WORKDIR /server
 
-EXPOSE 3000
+
+#### Run the command
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+
+EXPOSE 3000
